@@ -7,15 +7,30 @@ function sayFrench(phrase) {
     speaker.speak(msg);
 }
 
+function trySmallNumber() {
+    sayFrench(randomNumber());
+    this.blur();       
+}
+
+function tryYear() {
+    var day = randomDate(new Date(1969, 0, 1), new Date());
+    sayFrench(day);
+    this.blur();
+    console.log(day);
+}
+
+function tryPhone() {
+    var phone = randomPhone();
+    sayFrench(phone);
+    console.log(phone);
+    this.blur();
+}
+
 function init() {    
     speaker = window.speechSynthesis;
-    $("#button-try").click(function() {
-        sayFrench(randomNumber());});
-    $("#button-year").click(function() {
-        var day = randomDate(new Date(1969, 0, 1), new Date());
-        console.log(day);
-        sayFrench(day);
-    })
+    $("#button-try").click(trySmallNumber);    
+    $("#button-year").click(tryYear);
+    $("#button-phone").click(tryPhone);    
 }
 
 function randomYear() {
@@ -24,6 +39,10 @@ function randomYear() {
 
 function randomNumber() {
     return Math.round(1000 * Math.random());
+}
+
+function randomPhone() {
+    return Math.round(100000000 + 899999999 * Math.random()).toString().match(/.{1,2}/g).join(", ");
 }
 
 function randomDate(start, end) {
