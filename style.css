@@ -4,17 +4,44 @@ body {
 }
 
 h1 {
-    font-size: 32px;
+    font-size: 5vmin;
     text-align: center;
-    margin: 3.5em auto 3.5em;
+    margin: 2em auto 3.5em;
     line-height: 1.3;
 }
 
 .btn-block {
-    font-size: 22px;
-    background: orange;
+    font-size: 4vmin;
     color: #050520;
     padding-top: 1em;
     padding-bottom: 1em;
     margin-bottom: 0.75em;
+}
+
+.btn-primary {
+    background: orange;    
+}
+
+.btn-info {
+    background: darkorange;
+}
+
+#button-repeat {
+    margin-top: 1.2em;
+}
+
+#button-submit {
+    visibility: hidden;
+}
+
+
+#answer-phone, #answer-number, #answer-date {
+    font-family: "Courier New", Courier, monospace;
+    font-weight: bold;
+    font-size: 6vw;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    padding: 0.1em 1em;
+    color: black;
+    display: none;
 }

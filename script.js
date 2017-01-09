@@ -1,5 +1,6 @@
 var speaker,
-    mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+    mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
+    lastMessage = "";
 
 function sayFrench(phrase) {
     var msg = new SpeechSynthesisUtterance(phrase);
@@ -8,21 +9,46 @@ function sayFrench(phrase) {
 }
 
 function trySmallNumber() {
-    sayFrench(randomNumber());
-    this.blur();       
+    speaker.cancel();
+    sayFrench(lastMessage = randomNumber());
+    this.blur();
+    $("#answer-date").hide();
+    $("#answer-phone").hide();
+    $("#answer-number").show();
+    $("#button-submit").css("visibility", "visible");
 }
 
 function tryYear() {
-    var day = randomDate(new Date(1969, 0, 1), new Date());
-    sayFrench(day);
+    speaker.cancel();
+    sayFrench (lastMessage = randomDate(new Date(1969, 0, 1), new Date()) );
     this.blur();
-    console.log(day);
+    console.log(lastMessage);
+    $("#answer-phone").hide();
+    $("#answer-number").hide();
+    $("#answer-date").show();
+    $("#button-submit").css("visibility", "visible");    
 }
 
 function tryPhone() {
-    var phone = randomPhone();
-    sayFrench(phone);
-    console.log(phone);
+    speaker.cancel();
+    sayFrench(lastMessage = randomPhone());
+    this.blur();
+    console.log(lastMessage);
+    $("#answer-number").hide();
+    $("#answer-date").hide();    
+    $("#answer-phone").show();
+    $("#button-submit").css("visibility", "visible");
+}
+
+function repeat() {
+    speaker.cancel();
+    sayFrench(lastMessage);
+    this.blur();
+}
+
+function checkAnswer() {
+    var answer = $("#answers-here").find("input:visible").val();
+    console.log(answer);
     this.blur();
 }
 
@@ -30,7 +56,9 @@ function init() {
     speaker = window.speechSynthesis;
     $("#button-try").click(trySmallNumber);    
     $("#button-year").click(tryYear);
-    $("#button-phone").click(tryPhone);    
+    $("#button-phone").click(tryPhone);
+    $("#button-repeat").click(repeat);
+    $("#button-submit").click(checkAnswer);
 }
 
 function randomYear() {
@@ -42,7 +70,7 @@ function randomNumber() {
 }
 
 function randomPhone() {
-    return Math.round(100000000 + 899999999 * Math.random()).toString().match(/.{1,2}/g).join(", ");
+    return Math.round(100000000 + 899999999 * Math.random()).toString().match(/.{1,2}/g).join(". ");
 }
 
 function randomDate(start, end) {
