@@ -1,6 +1,8 @@
 var speaker,
     mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
     lastMessage = "",
+    failureMessage,
+    successMessage,
     currentInput,
     inputShort,
     inputDate,
@@ -13,24 +15,20 @@ function sayFrench(phrase) {
 }
 
 function saySuccess() {
-    var msg = new SpeechSynthesisUtterance("C'est correct.");
-    msg.lang = "fr-FR";
-    speaker.speak(msg);
+    speaker.speak(successMessage);
 }
 
 function sayFailure() {
-    var msg = new SpeechSynthesisUtterance("Dupa zbita.");
-    msg.lang = "pl-PL";
-    speaker.speak(msg);
+    speaker.speak(failureMesage);
 }
 
 function substituteCurrent(newInput) {
     if(currentInput) {
         currentInput.val("");
-        currentInput = newInput;
     } else {
         secondInit();
     }
+    currentInput = newInput;
 }
 
 function randomNumber() {
@@ -87,7 +85,7 @@ function tryPhone() {
     speaker.cancel();
     sayFrench(lastMessage = randomPhone());
     this.blur();
-    substituteCurrent(inputShort);
+    substituteCurrent(inputPhone);
     inputShort.hide();
     inputDate.hide();    
     inputPhone.show();
@@ -126,6 +124,10 @@ function init() {
     inputShort = $("#answer-short");
     inputDate = $("#answer-date");
     inputPhone = $("#answer-phone");
+    successMessage = new SpeechSynthesisUtterance("Correct.");
+    successMessage.lang = "fr-FR";
+    failureMesage = new SpeechSynthesisUtterance("Incorrect.");
+    failureMesage.lang = "fr-FR";
     $("#button-short").click(tryShort);    
     $("#button-date").click(tryDate);
     $("#button-phone").click(tryPhone);

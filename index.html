@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta lang = fr>
         <!-- Latest compiled and minified CSS -->
-        <link rel = "stylesheet" href = "bootstrap.min.css">
+        <link rel = "stylesheet" href = "css/bootstrap.min.css">
         <link rel= "stylesheet" href="style.css">
     </head>
     <body>
@@ -15,18 +15,18 @@
             </div>                       
             <div class = "row">
                 <div class= "col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12" id="buttons-here">
-                    <button class="btn btn-primary btn-block" id="button-short">Un numéro court, 0...999</button>
-                    <button class="btn btn-primary btn-block" id="button-date">Une année</button>
-                    <button class="btn btn-primary btn-block" id="button-phone">Un numéro de téléphone</button>
+                    <button class="btn btn-primary col-xs-4" id="button-short">123</button>
+                    <button class="btn btn-primary col-xs-4" id="button-date"><span class="glyphicon glyphicon-calendar"></span></button>
+                    <button class="btn btn-primary col-xs-4" id="button-phone"><span class="glyphicon glyphicon-earphone"> </span></button>
                 </div>
                 <div class= "col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12" id = "answers-here">
-                    <input type = "tel" id = "answer-short" name = "short" placeholder = "###" class = "col-sm-6 col-sm-offset-3 col-xs-11">
-                    <input type = "tel" id = "answer-date" name = "date" placeholder = "##-##-####" class = "col-sm-8 col-sm-offset-2 col-xs-11">
-                    <input type = "tel" id = "answer-phone" name = "phone"  placeholder = "##-##-##-##-#" class = "col-sm-10 col-sm-offset-1 col-xs-11">
+                    <input type = "tel" id = "answer-short" name = "short" placeholder = "###" class = "btn-block">
+                    <input type = "tel" id = "answer-date" name = "date" placeholder = "##-##-####" class = "btn-block">
+                    <input type = "tel" id = "answer-phone" name = "phone"  placeholder = "##-##-##-##-#" class = "btn-block">
                 </div>
-                <div class= "col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12">
-                    <button class="btn btn-primary btn-block" id="button-submit">Vérifier</button>                    
-                    <button class="btn btn-info btn-block" id="button-repeat">Répéter</button>
+                <div class= "col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12" id = "lower-buttons-here">
+                    <button class="btn btn-primary btn-lg col-xs-8" id="button-submit">Vérifier</button>                    
+                    <button class="btn btn-info btn-lg col-xs-4" id="button-repeat"><span class="glyphicon glyphicon-repeat"></span></button>
                 </div>                                
             </div>
         </div>
