@@ -4,6 +4,7 @@ body {
 }
 
 h1 {
+    font-family: fantasy, cursive;
     font-size: 5vmin;
     text-align: center;
     margin: 2em auto 3.5em;
@@ -11,10 +12,10 @@ h1 {
 }
 
 .btn-block {
-    font-size: 4vmin;
+    font-size: 5vmin;
     color: #050520;
-    padding-top: 1em;
-    padding-bottom: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
     margin-bottom: 0.75em;
 }
 
@@ -31,11 +32,11 @@ h1 {
 }
 
 #button-submit {
-    visibility: hidden;
+    display: none;
 }
 
 
-#answer-phone, #answer-number, #answer-date {
+#answer-phone, #answer-short, #answer-date {
     font-family: "Courier New", Courier, monospace;
     font-weight: bold;
     font-size: 6vw;

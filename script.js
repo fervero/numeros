@@ -1,6 +1,10 @@
 var speaker,
     mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
-    lastMessage = "";
+    lastMessage = "",
+    currentInput,
+    inputShort,
+    inputDate,
+    inputPhone;
 
 function sayFrench(phrase) {
     var msg = new SpeechSynthesisUtterance(phrase);
@@ -8,36 +12,90 @@ function sayFrench(phrase) {
     speaker.speak(msg);
 }
 
-function trySmallNumber() {
+function saySuccess() {
+    var msg = new SpeechSynthesisUtterance("C'est correct.");
+    msg.lang = "fr-FR";
+    speaker.speak(msg);
+}
+
+function sayFailure() {
+    var msg = new SpeechSynthesisUtterance("Dupa zbita.");
+    msg.lang = "pl-PL";
+    speaker.speak(msg);
+}
+
+function substituteCurrent(newInput) {
+    if(currentInput) {
+        currentInput.val("");
+        currentInput = newInput;
+    } else {
+        secondInit();
+    }
+}
+
+function randomNumber() {
+    return Math.round(1000 * Math.random());
+}
+
+function tryShort() {
     speaker.cancel();
     sayFrench(lastMessage = randomNumber());
     this.blur();
-    $("#answer-date").hide();
-    $("#answer-phone").hide();
-    $("#answer-number").show();
-    $("#button-submit").css("visibility", "visible");
+    substituteCurrent(inputShort);
+    inputDate.hide();
+    inputPhone.hide();
+    inputShort.show();
 }
 
-function tryYear() {
+function verifyShort (answer, pattern) {
+    return answer == pattern;
+}
+
+function formatDate(day, month, year) {
+    return day + " " + mois[parseInt(month) - 1] + " " + year;
+}
+
+function randomDate(start, end) {
+    var day = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    return formatDate(day.getDate(), day.getMonth(), day.getFullYear());
+}
+
+function tryDate() {
     speaker.cancel();
     sayFrench (lastMessage = randomDate(new Date(1969, 0, 1), new Date()) );
     this.blur();
-    console.log(lastMessage);
-    $("#answer-phone").hide();
-    $("#answer-number").hide();
-    $("#answer-date").show();
-    $("#button-submit").css("visibility", "visible");    
+    substituteCurrent(inputDate);
+    inputPhone.hide();
+    inputShort.hide();
+    inputDate.show();
+}
+
+function verifyDate (answer, pattern) {
+    var sliceAnswer = answer.split("-");
+    return formatDate(sliceAnswer [0], sliceAnswer [1], sliceAnswer [2]) == pattern;
+}
+
+function formatPhone(x) {
+    return x.toString().match(/.{1,2}/g).join("-");
+}
+
+function randomPhone() {
+    return formatPhone(Math.round(100000000 + 899999999 * Math.random()));
 }
 
 function tryPhone() {
     speaker.cancel();
     sayFrench(lastMessage = randomPhone());
     this.blur();
-    console.log(lastMessage);
-    $("#answer-number").hide();
-    $("#answer-date").hide();    
-    $("#answer-phone").show();
-    $("#button-submit").css("visibility", "visible");
+    substituteCurrent(inputShort);
+    inputShort.hide();
+    inputDate.hide();    
+    inputPhone.show();
+}
+
+function verifyPhone(answer, pattern) {
+    var sliceAnswer = parseInt(answer.split("-").join(""));
+    return formatPhone(sliceAnswer) == pattern;
 }
 
 function repeat() {
@@ -47,35 +105,37 @@ function repeat() {
 }
 
 function checkAnswer() {
-    var answer = $("#answers-here").find("input:visible").val();
-    console.log(answer);
+    var $inputField = $("#answers-here").find("input:visible"),
+        answer = $inputField.val(),
+        success;
+    console.log(answer, " =? ", lastMessage);
+    switch ($inputField.attr("name")) {
+        case "short" : success = verifyShort(answer, lastMessage);
+            break;
+        case "date" : success = verifyDate(answer, lastMessage);
+            break;
+        case "phone" : success = verifyPhone(answer, lastMessage);
+    }
+    if (success) saySuccess();
+    else sayFailure();
     this.blur();
 }
 
 function init() {    
     speaker = window.speechSynthesis;
-    $("#button-try").click(trySmallNumber);    
-    $("#button-year").click(tryYear);
+    inputShort = $("#answer-short");
+    inputDate = $("#answer-date");
+    inputPhone = $("#answer-phone");
+    $("#button-short").click(tryShort);    
+    $("#button-date").click(tryDate);
     $("#button-phone").click(tryPhone);
     $("#button-repeat").click(repeat);
     $("#button-submit").click(checkAnswer);
 }
 
-function randomYear() {
-    return 1920 + Math.round(100 * Math.random());
-}
-
-function randomNumber() {
-    return Math.round(1000 * Math.random());
-}
-
-function randomPhone() {
-    return Math.round(100000000 + 899999999 * Math.random()).toString().match(/.{1,2}/g).join(". ");
-}
-
-function randomDate(start, end) {
-    var day = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-    return day.getDate() + " " + mois[day.getMonth()] + " " + day.getFullYear();
+function secondInit() {
+    $("#button-submit").show();
+    $("#button-repeat").show();
 }
 
 $().ready(init);

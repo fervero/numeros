@@ -5,25 +5,24 @@
         <meta charset="utf-8">
         <meta lang = fr>
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link rel="stylesheet" href="style.css">
-        <!-- Latest compiled and minified JavaScript -->
+        <link rel = "stylesheet" href = "bootstrap.min.css">
+        <link rel= "stylesheet" href="style.css">
     </head>
     <body>
         <div class = "container-fluid" id = "main-container">
             <div class="row">
-                <h1 class = "col-xs-10 col-xs-offset-1">Apprenons les chiffres français, merde alors !</h1>
+                <h1 class = "col-xs-10 col-xs-offset-1">Apprenons les chiffres français !</h1>
             </div>                       
             <div class = "row">
                 <div class= "col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12" id="buttons-here">
-                    <button class="btn btn-primary btn-block" id="button-try">Un chiffre, 0...999</button>
-                    <button class="btn btn-primary btn-block" id="button-year">Une année</button>
+                    <button class="btn btn-primary btn-block" id="button-short">Un numéro court, 0...999</button>
+                    <button class="btn btn-primary btn-block" id="button-date">Une année</button>
                     <button class="btn btn-primary btn-block" id="button-phone">Un numéro de téléphone</button>
                 </div>
                 <div class= "col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12" id = "answers-here">
-                    <input type = "number" id = "answer-number" name = "short" placeholder = "###" class = "col-sm-6 col-sm-offset-3 col-xs-11">
-                    <input type = "tel" inputmode = "numeric" id = "answer-date" name = "date" placeholder = "##-##-####" class = "col-sm-8 col-sm-offset-2 col-xs-11">
-                    <input type = "tel" inputmode = "numeric" id = "answer-phone" name = "phone"  placeholder = "##-##-##-##-#" class = "col-sm-10 col-sm-offset-1 col-xs-11">
+                    <input type = "tel" id = "answer-short" name = "short" placeholder = "###" class = "col-sm-6 col-sm-offset-3 col-xs-11">
+                    <input type = "tel" id = "answer-date" name = "date" placeholder = "##-##-####" class = "col-sm-8 col-sm-offset-2 col-xs-11">
+                    <input type = "tel" id = "answer-phone" name = "phone"  placeholder = "##-##-##-##-#" class = "col-sm-10 col-sm-offset-1 col-xs-11">
                 </div>
                 <div class= "col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12">
                     <button class="btn btn-primary btn-block" id="button-submit">Vérifier</button>                    
@@ -33,7 +32,10 @@
         </div>
     </body>
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src = "jquery-3.1.1.min.js"></script>
+    
+<!--     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+     -->    
+     
     <script src = "script.js"></script>
 </html>
