@@ -50,7 +50,7 @@ function verifyShort (answer, pattern) {
 }
 
 function formatDate(day, month, year) {
-    return day + " " + mois[parseInt(month) - 1] + " " + year;
+    return day + " " + mois[parseInt(month)] + " " + year;
 }
 
 function randomDate(start, end) {
@@ -70,7 +70,7 @@ function tryDate() {
 
 function verifyDate (answer, pattern) {
     var sliceAnswer = answer.split("-");
-    return formatDate(sliceAnswer [0], sliceAnswer [1], sliceAnswer [2]) == pattern;
+    return formatDate(sliceAnswer [0], parseInt(sliceAnswer [1]) - 1, sliceAnswer [2]) == pattern;
 }
 
 function formatPhone(x) {
@@ -114,8 +114,10 @@ function checkAnswer() {
             break;
         case "phone" : success = verifyPhone(answer, lastMessage);
     }
-    if (success) saySuccess();
-    else sayFailure();
+    if (success) 
+        saySuccess();
+    else 
+        sayFailure();
     this.blur();
 }
 
