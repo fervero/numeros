@@ -6,7 +6,9 @@ var speaker,
     currentInput,
     inputShort,
     inputDate,
-    inputPhone;
+    inputPhone,
+    $answersHere,
+    verify = function() {return};
 
 function sayFrench(phrase) {
     var msg = new SpeechSynthesisUtterance(phrase);
@@ -26,7 +28,7 @@ function substituteCurrent(newInput) {
     if(currentInput) {
         currentInput.val("");
     } else {
-        secondInit();
+        thirdInit();
     }
     currentInput = newInput;
 }
@@ -38,6 +40,7 @@ function randomNumber() {
 function tryShort() {
     speaker.cancel();
     sayFrench(lastMessage = randomNumber());
+    verify = verifyShort;
     this.blur();
     substituteCurrent(inputShort);
     inputDate.hide();
@@ -61,6 +64,7 @@ function randomDate(start, end) {
 function tryDate() {
     speaker.cancel();
     sayFrench (lastMessage = randomDate(new Date(1969, 0, 1), new Date()) );
+    verify = verifyDate;
     this.blur();
     substituteCurrent(inputDate);
     inputPhone.hide();
@@ -85,6 +89,7 @@ function tryPhone() {
     speaker.cancel();
     sayFrench(lastMessage = randomPhone());
     this.blur();
+    verify = verifyPhone;
     substituteCurrent(inputPhone);
     inputShort.hide();
     inputDate.hide();    
@@ -103,41 +108,64 @@ function repeat() {
 }
 
 function checkAnswer() {
-    var $inputField = $("#answers-here").find("input:visible"),
-        answer = $inputField.val(),
-        success;
-    console.log(answer, " =? ", lastMessage);
-    switch ($inputField.attr("name")) {
-        case "short" : success = verifyShort(answer, lastMessage);
-            break;
-        case "date" : success = verifyDate(answer, lastMessage);
-            break;
-        case "phone" : success = verifyPhone(answer, lastMessage);
-    }
-    if (success) 
+    var $inputField = $answersHere.find("input:visible"),
+        answer = $inputField.val();
+    if (verify(answer, lastMessage)) 
         saySuccess();
     else 
         sayFailure();
     this.blur();
 }
 
-function init() {    
+function noVoices() {
+    $("footer").show();
+}
+
+function findFrenchVoice(list) {
+    for (var i = 0; i < list.length; i++) {
+            if ( (list[i].lang) && (list[i].lang.startsWith("fr")) ) return true;
+    }
+    return false;
+}
+
+
+function init() {
+    if(!("speechSynthesis" in window)) {
+        noVoices();
+        return;
+    }
     speaker = window.speechSynthesis;
+    if (findFrenchVoice (window.speechSynthesis.getVoices() ) ) 
+        secondInit();
+    else window.speechSynthesis.onvoiceschanged = function(e) {
+        var voices = window.speechSynthesis.getVoices();
+        if (findFrenchVoice(voices) && $("#button-short").attr("disabled")) {
+            secondInit();
+        }
+    }
+}
+
+
+function secondInit() {
+    sayFrench("Salut!");
     inputShort = $("#answer-short");
     inputDate = $("#answer-date");
     inputPhone = $("#answer-phone");
+    $answersHere = $("#answers-here");
     successMessage = new SpeechSynthesisUtterance("Correct.");
     successMessage.lang = "fr-FR";
     failureMesage = new SpeechSynthesisUtterance("Incorrect.");
     failureMesage.lang = "fr-FR";
-    $("#button-short").click(tryShort);    
-    $("#button-date").click(tryDate);
-    $("#button-phone").click(tryPhone);
+    $("h2").css("visibility", "hidden");
     $("#button-repeat").click(repeat);
     $("#button-submit").click(checkAnswer);
+    $("#button-short").removeAttr("disabled").click(tryShort);    
+    $("#button-date").removeAttr("disabled").click(tryDate);
+    $("#button-phone").removeAttr("disabled").click(tryPhone);
+
 }
 
-function secondInit() {
+function thirdInit() {
     $("#button-submit").show();
     $("#button-repeat").show();
 }

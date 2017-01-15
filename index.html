@@ -6,16 +6,16 @@
         <meta lang = "fr">
         <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
 <!--         <link href="https://fonts.googleapis.com/css?family=Dancing+Script:700" rel="stylesheet"> -->
-        <link href="fonts/DancingScript-Bold.ttf" rel="stylesheet">
         <link rel = "stylesheet" media = "all" href = "style.css">
         <link rel = "stylesheet" media = "screen and (orientation: portrait)" href = "style_portrait.css">
     </head>
     <body>
         <h1>Apprenons les chiffres français&nbsp;!</h1>
+        <h2>En train de chercher une voix française&nbsp;...</h2>
         <div id="buttons-here" class = "grid">
-            <button class="btn-short" id="button-short">123</button>
-            <button class="btn-short" id="button-date"><i class="fa fa-calendar" aria-hidden="true"></i></button>
-            <button class="btn-short" id="button-phone"><i class="fa fa-phone" aria-hidden="true"></i></button>
+            <button class="btn-short" id="button-short" disabled = "disabled">123</button>
+            <button class="btn-short" id="button-date" disabled = "disabled"><i class="fa fa-calendar" aria-hidden="true"></i></button>
+            <button class="btn-short" id="button-phone" disabled = "disabled"><i class="fa fa-phone" aria-hidden="true"></i></button>
         </div>
         <div id = "answers-here" class = "grid">
             <input type = "tel" id = "answer-short" name = "short" placeholder = "###" class = "btn-block">
@@ -26,6 +26,10 @@
             <button class="btn-short" id="button-repeat"><i class="fa fa-repeat" aria-hidden="true"></i></button>
             <button class="btn-long" id="button-submit">Vérifier</button>                    
         </div>
+        <footer>
+            <h1>Désolé, votre navigateur, paraît-il, ne soutient pas la synthèse vocale.</h1>
+            <h1>Sorry, your browser seems not to support text-to-speech.</h1>
+        </footer>
     </body>
     <script src = "jquery-3.1.1.min.js"></script>     
     <script src = "script.js"></script>
