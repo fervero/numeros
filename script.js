@@ -2,17 +2,17 @@ var speaker,
     lastMessage = "",
     failureUtterance,
     successUtterance,
+    lastUtterance,
     currentInput,
     inputShort,
     inputDate,
     inputPhone,
-    lastUtterance,
     $submitButton,
     $answersHere,
     $shortButton,
     $dateButton,
     $phoneButton,
-    verify = function() {return false};
+    answer;
 
 var frenchController = {
     failureMessage: "C'est incorrect.",
@@ -28,6 +28,7 @@ var frenchController = {
     },
     
     sayHello: function() {
+        speaker.cancel();
         this.bindButtons();
         successUtterance = this.utterance(this.successMessage);
         failureUtterance = this.utterance(this.failureMessage);
@@ -35,7 +36,7 @@ var frenchController = {
     },    
     
     randomShort: function() {
-        return Math.round(1000 * Math.random());
+        return Math.round(400 * Math.random());
     },  
         
     formatShort: function(x) {
@@ -195,7 +196,6 @@ function init() {
 
 function secondInit() {
     $submitButton = $("#button-submit");
-    frenchController.sayHello();
     inputShort = $("#answer-short");
     inputDate = $("#answer-date");
     inputPhone = $("#answer-phone");
@@ -203,6 +203,7 @@ function secondInit() {
     $shortButton = $("#button-short");
     $dateButton = $("#button-date");
     $phoneButton = $("#button-phone");
+    frenchController.sayHello();    
     $("h2").css("visibility", "hidden");
     $("#button-repeat").click(repeat);
     $shortButton
