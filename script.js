@@ -3,21 +3,22 @@ var speaker,
     failureUtterance,
     successUtterance,
     lastUtterance,
-    currentInput,
-    inputShort,
-    inputDate,
-    inputPhone,
+    $input,
     $submitButton,
     $answersHere,
     $shortButton,
     $dateButton,
     $phoneButton,
-    answer;
+    dateFrom = new Date(1989, 0, 1), 
+    dateTo = new Date(2020, 11, 31),
+    shortLimit = 1000;
 
 var frenchController = {
     failureMessage: "C'est incorrect.",
     successMessage: "C'est correct.",
     startMessage: "Salut !",
+    headerText: "Apprenons les chiffres français&nbsp;!",
+    verifyText: "Vérifier",
     lang: "fr-FR",
     months: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
 
@@ -33,10 +34,12 @@ var frenchController = {
         successUtterance = this.utterance(this.successMessage);
         failureUtterance = this.utterance(this.failureMessage);
         speaker.speak(this.utterance(this.startMessage));
+        $("h1").html(this.headerText);
+        $submitButton.html(this.verifyText);
     },    
     
     randomShort: function() {
-        return Math.round(400 * Math.random());
+        return this.formatShort( Math.round(shortLimit * Math.random()) );
     },  
         
     formatShort: function(x) {
@@ -56,71 +59,84 @@ var frenchController = {
     },
     
     formatPhone: function(x) {
-        return x.toString().match(/.{1,2}/g).join("-");
-    },    
+        var stringified = x.toString().match(/.{1,2}/g).join("-") 
+        return {
+            pattern: stringified,
+            placeholder: stringified.replace(/[0-9]/g,"#")
+        };
+    },
     
     verifyPhone: function(answer, pattern) {
-        var sliceAnswer = parseInt(answer.split("-").join(""));
-        return this.formatPhone(sliceAnswer) == pattern;        
+        var sliceAnswer = parseInt(answer.split(/\D/).join(""));
+        return this.formatPhone(sliceAnswer).pattern == pattern;
     },
 
     randomDate: function(start, end) {
+        start = start || dateFrom;
+        end = end || dateTo;
         var day = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
         return this.formatDate(day.getDate(), day.getMonth(), day.getFullYear());
     },
     
     formatDate: function(day, month, year) {
-        return day + " " + this.months[parseInt(month)] + " " + year;        
+        var stringified = day + " " + this.months[parseInt(month)] + " " + year;
+        return {
+            pattern: stringified,
+            placeholder: "##-##-####" // Don't really foresee any variances here.
+        }
     },
       
     verifyDate: function(answer, pattern) {
-        var sliceAnswer = answer.split("-");
-        return this.formatDate(sliceAnswer [0], parseInt(sliceAnswer [1]) - 1, sliceAnswer [2]) == pattern;
+        var sliceAnswer = answer.split(/\D/);
+        sliceAnswer[1] = parseInt(sliceAnswer[1]) - 1;
+        return this.formatDate.apply(this, sliceAnswer).pattern == pattern;
     },
     
-    tryGame: function (randomGenerator, verifyFunction, inputWindow) {
+    tryGame: function (newAnswer, formatFunction, verifyFunction, placeholder) {
         speaker.cancel();
-        lastMessage = randomGenerator;
+        if (!(lastMessage)) {
+            thirdInit();
+        }
+        lastMessage = newAnswer.pattern;
         speaker.speak(lastUtterance = this.utterance(lastMessage) );
-        substituteCurrent(inputWindow);
         $submitButton.off("click")
             .click(this.verifyAnswer.bind(this, verifyFunction) );                
-        inputDate.hide();
-        inputPhone.hide();
-        inputShort.hide();
-        inputWindow.show();
+        $input.attr("placeholder", newAnswer.placeholder);
+        $input.val("");
     },
 
     tryShort: function() {
         this.tryGame.call(
             this,
             this.randomShort(),
+            this.formatShort,
             this.verifyShort,
-            inputShort
+            "###"
         );
     },
     
     tryDate: function() {
         this.tryGame.call(
             this, 
-            this.randomDate(new Date(1969, 0, 1), new Date()), 
+            this.randomDate(), 
+            this.formatDate,
             this.verifyDate, 
-            inputDate);
+            "##-##-####");
     },
     
     tryPhone: function() {
         this.tryGame.call(
             this,
             this.randomPhone(),
+            this.formatPhone,
             this.verifyPhone,
-            inputPhone
+            "##-##-##-##-#"
         );
     },
     
     verifyAnswer: function(verifyFunction) {
         verifyFunction = verifyFunction || verify;
-        var $inputField = $answersHere.find("input:visible"),
-            answer = $inputField.val();
+        answer = $input.val();
         if (verifyFunction.call(this, answer, lastMessage)) 
             saySuccess();
         else 
@@ -139,11 +155,41 @@ var frenchController = {
 
 var spanishController = Object.create(frenchController);
 
-spanishController.months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-spanishController.startMessage = "Hola!";
-spanishController.failureMessage = "Es incorrecte.";
-spanishController.successMessage = "Es correcte.";
-spanishController.lang = "es-ES";
+Object.assign(spanishController, {
+    months: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+    startMessage: "Hola!",
+    failureMessage: "Es incorrecte.",
+    successMessage: "Es correcte.",
+    headerText: "¡Aprendamos los números españoles!",
+    verifyText: "Comprobar",
+    lang: "es-ES",
+    formatPhone: function(x) {
+        var stringified = x.toString().match(/.{1,3}/g).join("-") 
+        return {
+            pattern: stringified.replace(/-/g, ". "),
+            placeholder: stringified.replace(/[0-9]/g,"#")
+        };
+    }
+});
+
+var polishController = Object.create(spanishController);
+
+Object.assign(polishController, {
+    months: ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"],
+    startMessage: "Cześć!",
+    failureMessage: "Niepoprawnie.",
+    successMessage: "Poprawnie.",
+    headerText: "Uczymy się cyfr po polsku.",
+    verifyText: "Sprawdź",
+    lang: "pl-PL",
+    formatPhone: function(x) {
+        var stringified = x.toString().match(/.{1,3}/g).join("-"); 
+        return { 
+            pattern: stringified, 
+            placeholder: stringified.replace(/[0-9]/g,"#")
+        };
+    }
+});
 
 function saySuccess() {
     speaker.speak(successUtterance);
@@ -151,15 +197,6 @@ function saySuccess() {
 
 function sayFailure() {
     speaker.speak(failureUtterance);
-}
-
-function substituteCurrent(newInput) {
-    if(currentInput) {
-        currentInput.val("");
-    } else {
-        thirdInit();
-    }
-    currentInput = newInput;
 }
 
 function repeat() {
@@ -196,10 +233,8 @@ function init() {
 
 function secondInit() {
     $submitButton = $("#button-submit");
-    inputShort = $("#answer-short");
-    inputDate = $("#answer-date");
-    inputPhone = $("#answer-phone");
     $answersHere = $("#answers-here");
+    $input = $("#answer");
     $shortButton = $("#button-short");
     $dateButton = $("#button-date");
     $phoneButton = $("#button-phone");
@@ -216,6 +251,7 @@ function secondInit() {
 }
 
 function thirdInit() {
+    $("#answer").show();
     $("#button-submit").show();
     $("#button-repeat").show();
 }

@@ -50,7 +50,14 @@ button {
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     background: orange;
+    border-radius: 8px;
     cursor: pointer;
+}
+
+@media (min-width: 978px) {
+    button {
+        font-size: 49px;
+    }
 }
 
 .btn-short {
@@ -79,7 +86,7 @@ button {
     background-color: darkorange;
 }
 
-#answers-here > input {
+#answer {
     font-family: "Courier New", Courier, monospace;
     font-weight: bold;
     font-size: 5rem;

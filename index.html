@@ -10,26 +10,28 @@
         <link rel = "stylesheet" media = "screen and (orientation: portrait)" href = "style_portrait.css">
     </head>
     <body>
-        <h1>Apprenons les chiffres français&nbsp;!</h1>
-        <h2>En train de chercher une voix française&nbsp;...</h2>
-        <div id="buttons-here" class = "grid">
-            <button class="btn-short" id="button-short" disabled = "disabled">123</button>
-            <button class="btn-short" id="button-date" disabled = "disabled"><i class="fa fa-calendar" aria-hidden="true"></i></button>
-            <button class="btn-short" id="button-phone" disabled = "disabled"><i class="fa fa-phone" aria-hidden="true"></i></button>
-        </div>
-        <div id = "answers-here" class = "grid">
-            <input type = "tel" id = "answer-short" name = "short" placeholder = "###" class = "btn-block">
-            <input type = "tel" id = "answer-date" name = "date" placeholder = "##-##-####" class = "btn-block">
-            <input type = "tel" id = "answer-phone" name = "phone"  placeholder = "##-##-##-##-#" class = "btn-block">
-        </div>        
-        <div id = "lower-buttons-here" class = "grid">
-            <button class="btn-short" id="button-repeat"><i class="fa fa-repeat" aria-hidden="true"></i></button>
-            <button class="btn-long" id="button-submit">Vérifier</button>                    
-        </div>
+        <header>
+            <h1 id = "page-header">Apprenons les chiffres français&nbsp;!</h1>
+            <h2>En train de chercher une voix française&nbsp;...</h2>
+        </header>
+        <main>
+            <div id="buttons-here" class = "grid">
+                <button class="btn-short" id="button-short" disabled = "disabled">123</button>
+                <button class="btn-short" id="button-date" disabled = "disabled"><i class="fa fa-calendar" aria-hidden="true"></i></button>
+                <button class="btn-short" id="button-phone" disabled = "disabled"><i class="fa fa-phone" aria-hidden="true"></i></button>
+            </div>
+            <div id = "answers-here" class = "grid">
+                <input type = "tel" id = "answer" name = "answer" placeholder = "###" class = "btn-block">
+            </div>        
+            <div id = "lower-buttons-here" class = "grid">
+                <button class="btn-short" id="button-repeat"><i class="fa fa-repeat" aria-hidden="true"></i></button>
+                <button class="btn-long" id="button-submit">Vérifier</button>                    
+            </div>
+        </main>
         <footer>
             <h1>Désolé, votre navigateur, paraît-il, ne soutient pas la synthèse vocale.</h1>
             <h1>Sorry, your browser seems not to support text-to-speech.</h1>
-        </footer>
+        </footer>        
     </body>
     <script src = "jquery-3.1.1.min.js"></script>     
     <script src = "script.js"></script>
