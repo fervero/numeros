@@ -18,7 +18,6 @@ var frenchController = {
     successMessage: "C'est correct.",
     startMessage: "Salut !",
     headerText: "Apprenons les chiffres français&nbsp;!",
-    verifyText: "Vérifier",
     lang: "fr-FR",
     months: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
 
@@ -35,7 +34,6 @@ var frenchController = {
         failureUtterance = this.utterance(this.failureMessage);
         speaker.speak(this.utterance(this.startMessage));
         $("h1").html(this.headerText);
-        $submitButton.html(this.verifyText);
     },    
     
     randomShort: function() {
@@ -153,15 +151,12 @@ var frenchController = {
     }
 }
 
-var spanishController = Object.create(frenchController);
-
-Object.assign(spanishController, {
+var spanishController = jQuery.extend(Object.create(frenchController), {
     months: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
     startMessage: "Hola!",
     failureMessage: "Es incorrecte.",
     successMessage: "Es correcte.",
     headerText: "¡Aprendamos los números españoles!",
-    verifyText: "Comprobar",
     lang: "es-ES",
     formatPhone: function(x) {
         var stringified = x.toString().match(/.{1,3}/g).join("-") 
@@ -172,15 +167,12 @@ Object.assign(spanishController, {
     }
 });
 
-var polishController = Object.create(spanishController);
-
-Object.assign(polishController, {
+var polishController = jQuery.extend(Object.create(frenchController), {
     months: ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"],
     startMessage: "Cześć!",
     failureMessage: "Niepoprawnie.",
     successMessage: "Poprawnie.",
-    headerText: "Uczymy się cyfr po polsku.",
-    verifyText: "Sprawdź",
+    headerText: "Uczymy się liczb po polsku.",
     lang: "pl-PL",
     formatPhone: function(x) {
         var stringified = x.toString().match(/.{1,3}/g).join("-"); 
@@ -190,6 +182,23 @@ Object.assign(polishController, {
         };
     }
 });
+
+var englishController = jQuery.extend(Object.create(frenchController), {
+    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    startMessage: "Hello!",
+    failureMessage: "Incorrect.",
+    successMessage: "Correct.",
+    headerText: "Let's learn English numbers.",
+    lang: "en-UK",
+    formatPhone: function(x) {
+        var stringified = x.toString().match(/.{1,3}/g).join("-"); 
+        return { 
+            pattern: stringified, 
+            placeholder: stringified.replace(/[0-9]/g,"#")
+        };
+    }
+});
+
 
 function saySuccess() {
     speaker.speak(successUtterance);
@@ -215,7 +224,21 @@ function findFrenchVoice(list) {
     return false;
 }
 
+function handleHashChange(e) {
+    var languages = {
+        pl: polishController,
+        es: spanishController,
+        fr: frenchController,
+        en: englishController
+    };
+    var newHash = e.newURL.match(/#.*/)[0].slice(1);
+    console.log(newHash);
+    console.log(languages[newHash]);
+    languages[newHash].sayHello();
+}
+
 function init() {
+    window.addEventListener("hashchange", handleHashChange, false);
     if(!("speechSynthesis" in window)) {
         noVoices();
         return;
