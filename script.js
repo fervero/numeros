@@ -5,36 +5,74 @@ var speaker,
     lastUtterance,
     $input,
     $submitButton,
-    $answersHere,
+    $repeatButton,
     $shortButton,
     $dateButton,
     $phoneButton,
+    $pageTitle,
+    $pleaseWait,
     dateFrom = new Date(1989, 0, 1), 
     dateTo = new Date(2020, 11, 31),
-    shortLimit = 1000;
+    shortLimit = 999;
 
 var frenchController = {
     failureMessage: "C'est incorrect.",
     successMessage: "C'est correct.",
     startMessage: "Salut !",
     headerText: "Apprenons les chiffres français&nbsp;!",
+    waitText: "En train de chercher une voix française&nbsp;...",
     lang: "fr-FR",
     months: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
+    haveVoice: false,
 
     utterance: function(phrase) {
         var msg = new SpeechSynthesisUtterance(phrase);
         msg.lang = this.lang;
         return msg;
     },
+
+    showWait: function() {
+        $pleaseWait.html(this.waitText).show();
+    },
+    
+    hideWait: function() {
+        $pleaseWait.hide();
+    },
+    
+    findMyVoice: function() {
+        var voices = window.speechSynthesis.getVoices();
+        for (var i = 0; i < voices.length; i++) {
+                if ( (voices[i].lang) && (voices[i].lang.startsWith(this.lang.substr(0,2) ) ) )
+                    return this.haveVoice = true;
+        }        
+        return false;
+    },
     
     sayHello: function() {
+        $pageTitle.html(this.headerText);
         speaker.cancel();
         this.bindButtons();
+        if (this.haveVoice || this.findMyVoice() )
+            this.startGame();
+        else {
+            this.showWait();
+            disableButtons();
+            window.speechSynthesis.onvoiceschanged = function() {
+                if(this.findMyVoice()) {
+                    window.speechSynthesis.onvoiceschanged = null;
+                    this.startGame();
+                }
+            }.bind(this);
+        };
+    },
+    
+    startGame: function() {
+        this.hideWait();
         successUtterance = this.utterance(this.successMessage);
         failureUtterance = this.utterance(this.failureMessage);
         speaker.speak(this.utterance(this.startMessage));
-        $("h1").html(this.headerText);
-    },    
+        enableButtons();
+    },
     
     randomShort: function() {
         return this.formatShort( Math.round(shortLimit * Math.random()) );
@@ -93,7 +131,7 @@ var frenchController = {
     tryGame: function (newAnswer, formatFunction, verifyFunction, placeholder) {
         speaker.cancel();
         if (!(lastMessage)) {
-            thirdInit();
+            secondInit();
         }
         lastMessage = newAnswer.pattern;
         speaker.speak(lastUtterance = this.utterance(lastMessage) );
@@ -147,7 +185,10 @@ var frenchController = {
         $phoneButton.off("click")
             .click(this.tryPhone.bind(this) );
         $dateButton.off("click")
-            .click(this.tryDate.bind(this) );        
+            .click(this.tryDate.bind(this) );
+        $input.val("");
+        lastMessage = "";
+        lastUtterance = null;
     }
 }
 
@@ -157,27 +198,12 @@ var spanishController = jQuery.extend(Object.create(frenchController), {
     failureMessage: "Es incorrecte.",
     successMessage: "Es correcte.",
     headerText: "¡Aprendamos los números españoles!",
+    waitText: "Buscando una voz española&nbsp;...",
     lang: "es-ES",
     formatPhone: function(x) {
         var stringified = x.toString().match(/.{1,3}/g).join("-") 
         return {
             pattern: stringified.replace(/-/g, ". "),
-            placeholder: stringified.replace(/[0-9]/g,"#")
-        };
-    }
-});
-
-var polishController = jQuery.extend(Object.create(frenchController), {
-    months: ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"],
-    startMessage: "Cześć!",
-    failureMessage: "Niepoprawnie.",
-    successMessage: "Poprawnie.",
-    headerText: "Uczymy się liczb po polsku.",
-    lang: "pl-PL",
-    formatPhone: function(x) {
-        var stringified = x.toString().match(/.{1,3}/g).join("-"); 
-        return { 
-            pattern: stringified, 
             placeholder: stringified.replace(/[0-9]/g,"#")
         };
     }
@@ -189,6 +215,7 @@ var englishController = jQuery.extend(Object.create(frenchController), {
     failureMessage: "Incorrect.",
     successMessage: "Correct.",
     headerText: "Let's learn English numbers.",
+    waitText: "Looking for an English voice...",
     lang: "en-UK",
     formatPhone: function(x) {
         var stringified = x.toString().match(/.{1,3}/g).join("-"); 
@@ -197,6 +224,16 @@ var englishController = jQuery.extend(Object.create(frenchController), {
             placeholder: stringified.replace(/[0-9]/g,"#")
         };
     }
+});
+
+var polishController = jQuery.extend(Object.create(englishController), {
+    months: ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia "],
+    startMessage: "Cześć!",
+    failureMessage: "Niepoprawnie.",
+    successMessage: "Poprawnie.",
+    headerText: "Uczymy się liczb po polsku.",
+    waitText: "Szukam polskiego głosu...",
+    lang: "pl-PL"
 });
 
 
@@ -210,7 +247,7 @@ function sayFailure() {
 
 function repeat() {
     speaker.cancel();
-    speaker.speak(lastUtterance);
+    if(lastUtterance) speaker.speak(lastUtterance);
 }
 
 function noVoices() {
@@ -224,56 +261,71 @@ function findFrenchVoice(list) {
     return false;
 }
 
-function handleHashChange(e) {
+function changeLanguage(hash) {
     var languages = {
         pl: polishController,
         es: spanishController,
         fr: frenchController,
         en: englishController
     };
-    var newHash = e.newURL.match(/#.*/)[0].slice(1);
-    console.log(newHash);
-    console.log(languages[newHash]);
-    languages[newHash].sayHello();
+    if (!(hash in languages)) hash = "fr";
+    languages[hash].sayHello();
 }
 
-function init() {
-    window.addEventListener("hashchange", handleHashChange, false);
-    if(!("speechSynthesis" in window)) {
-        noVoices();
-        return;
-    }
+function handleHashChange(e) {
+    changeLanguage(e.newURL.match(/#.*/)[0].slice(1));
+}
+
+function cacheButtons() {
     speaker = window.speechSynthesis;
-    if (findFrenchVoice (window.speechSynthesis.getVoices() ) ) 
-        secondInit();
-    else window.speechSynthesis.onvoiceschanged = function(e) {
-        var voices = window.speechSynthesis.getVoices();
-        if (findFrenchVoice(voices) && $("#button-short").attr("disabled")) {
-            secondInit();
-        }
-    }
-}
-
-function secondInit() {
+    $pageTitle = $("#page-header");
+    $pleaseWait = $("#wait-header");
     $submitButton = $("#button-submit");
-    $answersHere = $("#answers-here");
     $input = $("#answer");
     $shortButton = $("#button-short");
     $dateButton = $("#button-date");
     $phoneButton = $("#button-phone");
-    frenchController.sayHello();    
-    $("h2").css("visibility", "hidden");
-    $("#button-repeat").click(repeat);
-    $shortButton
-        .removeAttr("disabled");
-    $dateButton
-        .removeAttr("disabled");
-    $phoneButton
-        .removeAttr("disabled");
-    frenchController.bindButtons();
+    $pleaseWait = $("#wait-header");
+    $repeatButton = $("#button-repeat");
+}
+    
+function enableButtons() {
+    [
+        $submitButton,
+        $shortButton,
+        $dateButton,
+        $phoneButton,
+        $repeatButton
+    ].forEach(function (x) {
+        x.removeAttr("disabled");
+    });
+}
+    
+function disableButtons() {
+    [
+        $submitButton,
+        $shortButton,
+        $dateButton,
+        $phoneButton,
+        $repeatButton
+    ].forEach(function (x) {
+        x.attr("disabled", "disabled");
+    });
 }
 
-function thirdInit() {
+function init() {
+    if(!("speechSynthesis" in window)) {
+        noVoices();
+        return;
+    }
+    window.speechSynthesis.getVoices();
+    cacheButtons();
+    $repeatButton.click(repeat);
+    window.addEventListener("hashchange", handleHashChange, false);    
+    changeLanguage(window.location.hash.slice(1));
+}
+
+function secondInit() {
     $("#answer").show();
     $("#button-submit").show();
     $("#button-repeat").show();
