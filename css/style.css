@@ -1,0 +1,157 @@
+body {
+    background: #000080;
+    color: #CACACA;
+    margin: 0 4%;
+    max-width: 1000px;
+    transition: transform 0.65s;
+}
+
+*, *:after, *.before {
+    box-sizing: border-box;
+}
+
+a > img{
+    font-family: Helvetica, Arial, sans-serif;
+    float: right;
+    width: 9vw;
+    margin-bottom: 1.2em;
+}
+
+input {
+    font-family: "Roboto Mono", Courier, monospace;
+    font-weight: 700;
+    font-size: 8vw;
+    padding: 0.15em 1em;
+    color: #10103A;
+    width: 100%;
+    float: left;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+footer {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    padding-top: 15vh;
+    width: 100vw;
+    height: 100vh;
+    background: darkblue;
+}
+
+h1, h2 {
+    font-family: 'Dancing Script', cursive;    
+    text-align: center;    
+}
+
+h1 {
+    font-size: 5vw;
+    font-weight: bold;
+    margin-bottom: 1em;
+    line-height: 1.3;
+    clear: both;
+}
+
+h2 {
+    margin-bottom: 1.8em;
+}
+
+button {
+    float: left;
+    font-family: 'Dancing Script', cursive;
+    font-size: 5vw;
+    color: #10103A;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    background: #FFA500;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.grid:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.btn-short {
+    width: 32%;
+}
+
+.btn-long {
+    width: 49%; 
+}
+
+.btn-short, .btn-long {
+    margin-right: 2%;    
+}
+
+.btn-short:last-child, .btn-long:last-child {
+    margin-right: 0;
+}
+
+#page-header {
+    margin-top: 2em;
+}
+
+#answers-here {
+    display: none;
+}
+
+#button-submit {
+    background-color: #FFD000;
+}
+
+#button-repeat {
+    background-color: #E06A00;
+}
+
+[disabled] {
+    opacity: 0.6;
+    filter: blur(3px);
+    cursor: default;
+}
+
+@media (min-width: 978px) {
+    h1 {
+        font-size: 49px;
+    }
+    
+    button {
+        font-size: 49px;
+    }
+    
+    input {
+        font-size: 80px;
+    }
+
+    a > img {
+        width: 90px;
+    }
+}
+
+@media screen and (orientation: portrait) {
+    body {
+        margin: 0 2%;
+        max-width: none;
+    }
+
+    h1 {
+        font-size: 7vw;
+    }
+
+    button {
+        font-size: 7.5vw;
+        color: #050520;
+    }
+
+    input {
+        font-size: 9vw;
+    }    
+}
+
+body.flipped {
+    transform: rotateY(360deg);
+}

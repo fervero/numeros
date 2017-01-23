@@ -4,32 +4,32 @@
         <title>Apprenons les chiffres !</title>
         <meta charset="utf-8">
         <meta lang = "fr">
-        <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
-<!--         <link href="https://fonts.googleapis.com/css?family=Dancing+Script:700" rel="stylesheet"> -->
-        <link rel = "stylesheet" media = "all" href = "style.css">
-        <link rel = "stylesheet" media = "screen and (orientation: portrait)" href = "style_portrait.css">
+		<meta name="format-detection" content="telephone=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css?family=Dancing+Script:700|Roboto+Mono" rel="stylesheet">        
+<link rel = "stylesheet" media = "all" href = "css/style.css">
     </head>
     <body>
         <header>
-            <a href="#fr"><img src="pic/france.png" alt="fr"></a>
-            <a href="#es"><img src="pic/spain.png" alt="es"></a>
-            <a href="#pl"><img src="pic/poland.png" alt="pl"></a>
-            <a href="#en"><img src="pic/the_uk.png" alt="en"></a>
+            <div id="flags">
+                <a href="#fr"><img src="pic/france.png" alt="FR"></a>
+                <a href="#es"><img src="pic/spain.png" alt="ES"></a>
+                <a href="#pl"><img src="pic/poland.png" alt="PL"></a>
+                <a href="#en"><img src="pic/the_uk.png" alt="EN"></a>
+            </div>
             <h1 id = "page-header">Apprenons les chiffres français&nbsp;!</h1>
             <h2 id = "wait-header">En train de chercher une voix française&nbsp;...</h2>
         </header>
         <main>
             <div id="buttons-here" class = "grid">
-                <button class="btn-short" id="button-short" disabled = "disabled">123</button>
-                <button class="btn-short" id="button-date" disabled = "disabled"><i class="fa fa-calendar" aria-hidden="true"></i></button>
-                <button class="btn-short" id="button-phone" disabled = "disabled"><i class="fa fa-phone" aria-hidden="true"></i></button>
+                <button class="btn-short" id="button-short" disabled = "disabled" aria-label = "short number">123</button>
+                <button class="btn-short" id="button-date" disabled = "disabled" aria-label = "date"><i class="fa fa-calendar" aria-hidden="true"></i></button>
+                <button class="btn-short" id="button-phone" disabled = "disabled" aria-label = "phone number"><i class="fa fa-phone" aria-hidden="true"></i></button>
             </div>
             <div id = "answers-here" class = "grid">
                 <input type = "tel" id = "answer" name = "answer" placeholder = "###">
-            </div>        
-            <div id = "lower-buttons-here" class = "grid">
-                <button class="btn-long" id="button-repeat"><i class="fa fa-repeat" aria-hidden="true"></i></button>
-                <button class="btn-long" id="button-submit"><i class="fa fa-check" aria-hidden="true"></i></button>                    
+                <button class="btn-long" id="button-repeat"  aria-label = "repeat"><i class="fa fa-repeat" aria-hidden="true"></i></button>
+                <button class="btn-long" id="button-submit" aria-label = "verify"><i class="fa fa-check" aria-hidden="true"></i></button>                    
             </div>
         </main>
         <footer>
@@ -37,6 +37,6 @@
             <h1>Sorry, your browser seems not to support text-to-speech.</h1>
         </footer>        
     </body>
-    <script src = "jquery-3.1.1.min.js"></script>     
-    <script src = "script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> 
+    <script src = "js/script.js"></script>
 </html>
