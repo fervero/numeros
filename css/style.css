@@ -4,29 +4,33 @@ body {
     margin: 0 4%;
     max-width: 1000px;
     transition: transform 0.65s;
+    font-size: 28px;
 }
 
-*, *:after, *.before {
-    box-sizing: border-box;
-}
-
-a > img{
-    font-family: Helvetica, Arial, sans-serif;
-    float: right;
-    width: 9vw;
-    margin-bottom: 1.2em;
+input, button {
+    padding: 0.3em 0.2em;
+    margin: 0.4rem 0.3rem;
+    box-sizing: content-box;
+    font-size: inherit;
 }
 
 input {
     font-family: "Roboto Mono", Courier, monospace;
     font-weight: 700;
-    font-size: 8vw;
-    padding: 0.15em 1em;
     color: #10103A;
-    width: 100%;
-    float: left;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    flex: 4;
+    min-width: 92%;
+    padding-right: 0;
+}
+
+button {
+    font-family: 'Dancing Script', cursive;
+    font-weight: bold;
+    color: #10103A;
+    background: #FFA500;
+    border-radius: 8px;
+    cursor: pointer;
+    flex: 1;
 }
 
 footer {
@@ -58,54 +62,25 @@ h2 {
     margin-bottom: 1.8em;
 }
 
-button {
-    float: left;
-    font-family: 'Dancing Script', cursive;
-    font-size: 5vw;
-    color: #10103A;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    background: #FFA500;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-.grid:after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
-.btn-short {
-    width: 32%;
-}
-
-.btn-long {
-    width: 49%; 
-}
-
-.btn-short, .btn-long {
-    margin-right: 2%;    
-}
-
-.btn-short:last-child, .btn-long:last-child {
-    margin-right: 0;
-}
-
 #page-header {
     margin-top: 2em;
 }
 
+#buttons-here {
+    display: flex;
+    align-content: space-between;
+}
+
 #answers-here {
     display: none;
+    flex-flow: row wrap;
 }
 
 #button-submit {
-    background-color: #FFD000;
+    background-color: #FFEA00;
 }
 
 #button-repeat {
-    background-color: #E06A00;
 }
 
 [disabled] {
@@ -114,21 +89,35 @@ button {
     cursor: default;
 }
 
+#flags {
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+#flags > a {
+    margin-right: 0.2em;
+    font-size: 7vw;
+}
+
+#flags > #home {
+    color: silver;
+    margin-right: auto;
+    font-size: 9vw;
+}
+
 @media (min-width: 978px) {
     h1 {
         font-size: 49px;
     }
     
-    button {
-        font-size: 49px;
+    #flags > a {
+        font-size: 68px;
     }
     
-    input {
-        font-size: 80px;
-    }
-
-    a > img {
-        width: 90px;
+    #flags > #home {
+        font-size: 88px;
     }
 }
 
@@ -141,15 +130,14 @@ button {
     h1 {
         font-size: 7vw;
     }
+}
 
-    button {
-        font-size: 7.5vw;
-        color: #050520;
+@media (min-width: 30rem) {
+    input {
+        min-width: 0;
     }
 
-    input {
-        font-size: 9vw;
-    }    
+    
 }
 
 body.flipped {

@@ -87,7 +87,6 @@ waits for the browser to make a French voice available. */
             this.hideWait();
             successUtterance = this.utterance(this.successMessage);
             failureUtterance = this.utterance(this.failureMessage);
-            speaker.speak(this.utterance(this.startMessage));
             enableButtons();
         },
 
@@ -165,8 +164,7 @@ if hidden - shows them. */
             }
             lastMessage = newAnswer.pattern;
             speaker.speak(lastUtterance = this.utterance(lastMessage) );
-            $submitButton.off("click")
-                .click(this.verifyAnswer.bind(this, verifyFunction) );                
+            $lowerButtons.submit(this.verifyAnswer.bind(this, verifyFunction));
             $input.attr("placeholder", newAnswer.placeholder);
             $input.val("");
         },
@@ -207,6 +205,7 @@ if hidden - shows them. */
                 saySuccess();
             else 
                 sayFailure();
+            return false;
         },
 
         bindButtons: function() {
@@ -350,7 +349,7 @@ if hidden - shows them. */
 "Answers" here means: input field, repeat button, submit button. */
     
     function showAnswers() {
-        $lowerButtons.show();
+        $lowerButtons.show().css("display", "flex");
     }
 
     function hideAnswers() {
