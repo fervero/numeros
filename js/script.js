@@ -87,7 +87,9 @@ waits for the browser to make a French voice available. */
             this.hideWait();
             successUtterance = this.utterance(this.successMessage);
             failureUtterance = this.utterance(this.failureMessage);
-            enableButtons();
+            var hello = this.utterance(this.startMessage);
+            hello.onstart = enableButtons;
+            speaker.speak(hello);
         },
 
         randomShort: function() {
@@ -313,6 +315,7 @@ if hidden - shows them. */
 
     function changeLanguage(hash) {
 // This function is responsible both for initializing and for changing the controller, according to the selected language.
+        disableButtons();
         var languages = {
             pl: polishController,
             es: spanishController,
