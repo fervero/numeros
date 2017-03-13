@@ -1,7 +1,6 @@
 /*
 
-Les Chiffres Français,
-by Maciej Bójko, 2017.
+Copyright (c) 2017, Maciej Bójko.
 All rights reserved.
 
 */
