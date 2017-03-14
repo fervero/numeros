@@ -228,7 +228,7 @@ if hidden - shows them. */
         failureMessage: "Es incorrecte.",
         successMessage: "Es correcte.",
         headerText: "¡Aprendamos los números españoles!",
-        waitText: "Buscando una voz española&nbsp;...",
+        waitText: "Buscando una voz española...",
         lang: "es-ES",
         formatPhone: function(x) {
             var stringified = x.toString().match(/.{1,3}/g).join("-") 
