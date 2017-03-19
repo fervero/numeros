@@ -30,14 +30,25 @@ All rights reserved.
         startMessage: "Salut !",
         headerText: "Apprenons les chiffres français&#8239;!",
         waitText: "En train de chercher une voix française...",
-        lang: "fr-FR",
+        lang: "fr",
         months: ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
         haveVoice: false,
+        
+        randomVoice: function() {
+            var voices = speaker.getVoices(),
+                lang = this.lang;
+            var compatibleVoices = voices.filter(function(elem) {
+                return (elem.lang) && (elem.lang.startsWith(lang));
+            });
+            var i = Math.floor(Math.random() * compatibleVoices.length);
+            return compatibleVoices[i];
+        },
 
         utterance: function(phrase) {
 // Turns the given string in a speaken utterance in French.
             var msg = new SpeechSynthesisUtterance(phrase);
             msg.lang = this.lang;
+            msg.voice = this.randomVoice();
             return msg;
         },
 
@@ -53,12 +64,11 @@ method and the next take care of showing and hiding them as needed.*/
 
         findMyVoice: function() {
 // Checks whether the browser speaks French.
-            var voices = window.speechSynthesis.getVoices();
-            for (var i = 0; i < voices.length; i++) {
-                if ( (voices[i].lang) && (voices[i].lang.startsWith(this.lang.substr(0,2) ) ) )
-                    return true;
-            }
-            return false;
+            var voices = window.speechSynthesis.getVoices(),
+                lang = this.lang;
+            return voices.some(function(elem) {
+                return (elem.lang) && (elem.lang.startsWith(lang))
+            });            
         },
 
         initController: function() {
@@ -228,8 +238,8 @@ if hidden - shows them. */
         failureMessage: "Es incorrecte.",
         successMessage: "Es correcte.",
         headerText: "¡Aprendamos los números españoles!",
-        waitText: "Buscando una voz española...",
-        lang: "es-ES",
+        waitText: "Buscando una voz española&nbsp;...",
+        lang: "es",
         formatPhone: function(x) {
             var stringified = x.toString().match(/.{1,3}/g).join("-") 
             return {
@@ -254,7 +264,7 @@ if hidden - shows them. */
         successMessage: "Poprawnie.",
         headerText: "Uczymy się liczb po polsku.",
         waitText: "Szukam polskiego głosu...",
-        lang: "pl-PL",
+        lang: "pl",
         formatPhone: function(x) {
             var stringified = x.toString().match(/.{1,3}/g).join("-"); 
             return { 
@@ -278,7 +288,7 @@ if hidden - shows them. */
         successMessage: "Correct.",
         headerText: "Let's learn English numbers.",
         waitText: "Looking for an English voice...",
-        lang: "en-UK",
+        lang: "en",
         formatDate: function(day, month, year) {
 // Specifically, the customary month-day-year order requires a tiny bit of extra attention.
             var stringified = this.months[parseInt(month)] + " " + day + " " + year;
