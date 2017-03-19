@@ -319,7 +319,7 @@ if hidden - shows them. */
 
     function noVoices() {
 // If the browser supports no Web Speech API at ALL, this function is called.
-        $("footer").show();
+        $("#speechless").show();
     }
 
     function changeLanguage(hash) {

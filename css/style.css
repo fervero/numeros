@@ -33,7 +33,7 @@ button {
     flex: 1;
 }
 
-footer {
+#speechless {
     display: none;
     position: fixed;
     z-index: 10;
@@ -42,7 +42,7 @@ footer {
     padding-top: 15vh;
     width: 100vw;
     height: 100vh;
-    background: darkblue;
+    background: #000080;
 }
 
 h1, h2 {
