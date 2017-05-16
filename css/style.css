@@ -3,26 +3,28 @@ body {
     color: #CACACA;
     margin: 0 4%;
     max-width: 1000px;
+    -webkit-transition: -webkit-transform 0.65s;
+    transition: -webkit-transform 0.65s;
     transition: transform 0.65s;
+    transition: transform 0.65s, -webkit-transform 0.65s;
     font-size: 28px;
 }
-
 input, button {
     padding: 0.3em 0.2em;
     margin: 0.4rem 0.3rem;
     box-sizing: content-box;
     font-size: inherit;
 }
-
 input {
     font-family: "Roboto Mono", Courier, monospace;
     font-weight: 700;
     color: #10103A;
+    -webkit-box-flex: 4;
+    -ms-flex: 4;
     flex: 4;
     min-width: 92%;
     padding-right: 0;
 }
-
 button {
     font-family: 'Dancing Script', cursive;
     font-weight: bold;
@@ -30,9 +32,16 @@ button {
     background: #FFA500;
     border-radius: 8px;
     cursor: pointer;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
     flex: 1;
 }
-
+button:focus {
+    box-shadow: 0px 0px 5px 5px rgba(255,255,255,.8);
+}
+input:focus {
+    box-shadow: 0px 0px 5px 5px rgba(255,168,0,.8);
+}
 #speechless {
     display: none;
     position: fixed;
@@ -67,12 +76,18 @@ h2 {
 }
 
 #buttons-here {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -ms-flex-line-pack: justify;
     align-content: space-between;
 }
 
 #answers-here {
     display: none;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: row wrap;
     flex-flow: row wrap;
 }
 
@@ -85,14 +100,24 @@ h2 {
 
 [disabled] {
     opacity: 0.6;
+    -webkit-filter: blur(3px);
     filter: blur(3px);
     cursor: default;
 }
 
 #flags {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: row;
     flex-flow: row;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
     justify-content: flex-end;
+    -webkit-box-align: end;
+    -ms-flex-align: end;
     align-items: flex-end;
 }
 
@@ -141,5 +166,6 @@ h2 {
 }
 
 body.flipped {
+    -webkit-transform: rotateY(360deg);
     transform: rotateY(360deg);
 }
